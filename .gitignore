@@ -1,0 +1,9 @@
+*.ppk
+*.pem
+.terraform/
+*.tfstate
+*.tfsta*
+.terraform*
+*.jpg
+*.jpeg
+*.png
