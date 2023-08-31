@@ -10,30 +10,36 @@ terraform {
 
 provider "azurerm" {
   features {}
-  #subscription_id = "d5a9087f-7556-40c9-b9fd-80b4468b8ef8"
-  #tenant_id         = "${env.ARM_TENANT_ID}"
-  #client_id = "${env.ARM_CLIENT_ID}"
-  #client_secret = "${env.ARM_CLIENT_SECRET}"
 }
 
-#resource "azurerm_resource_group" "tfm_app" {
-#  name     = var.rg_name
-#  location = var.location
-#}
+# Generate a random integer to create a globally unique name
+resource "random_integer" "ri" {
+  min = 10000
+  max = 99999
+}
 
-resource "azurerm_service_plan" "tfm_app" {
-  name                = var.app_service_plan_name
-  location            = var.location
-  resource_group_name = azurerm_resource_group.tfm_app.name
+resource "azurerm_resource_group" "tfm_rg" {
+  name     = "rg-${random_integer.ri.result}"
+  location = "eastus"
+}
+
+resource "azurerm_service_plan" "tfm_asp" {
+  name                = "asp-${random_integer.ri.result}"
+  location            = "eastus"
+  resource_group_name = azurerm_resource_group.tfm_rg.name
   os_type             = "Linux"
-  sku_name            = "F1"
+  sku_name            = "B1"
 }
 
 resource "azurerm_linux_web_app" "tfm_app" {
-  name                = var.app_service_name
-  location            = azurerm_resource_group.tfm_app.location
-  resource_group_name = azurerm_resource_group.tfm_app.name
-  service_plan_id     = azurerm_service_plan.tfm_app.id
+  name                = "app-${random_integer.ri.result}"
+  location            = azurerm_resource_group.tfm_rg.location
+  resource_group_name = azurerm_resource_group.tfm_rg.name
+  service_plan_id     = azurerm_service_plan.tfm_asp.id
 
-  site_config {}
+  site_config {
+    application_stack {
+      node_version = "16-lts"
+    }
+  }
 }

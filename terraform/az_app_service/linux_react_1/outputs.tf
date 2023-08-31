@@ -1,9 +1,9 @@
 output "resource_group_name" {
-  value = azurerm_resource_group.tfm_app.name
+  value = azurerm_resource_group.tfm_rg.name
 }
 
 output "app_service_plan" {
-  value = azurerm_service_plan.tfm_app.name
+  value = azurerm_service_plan.tfm_asp.name
 }
 
 output "app_service" {
