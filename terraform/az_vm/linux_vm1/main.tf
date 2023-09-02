@@ -10,6 +10,11 @@ resource "azurerm_virtual_network" "boga_vnet" {
   address_space       = ["10.0.0.0/20"] #can handle 32-24=2^12 = 4096 IPs (~4000 devices)
   location            = var.vm_location
   resource_group_name = data.azurerm_resource_group.rg.name
+  tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    resourceFor  = "LinuxVM"
+  }
 }
 
 #create subnets
@@ -26,6 +31,11 @@ resource "azurerm_public_ip" "lin_IP" {
   location            = var.vm_location
   resource_group_name = data.azurerm_resource_group.rg.name
   allocation_method   = var.ip_allocation_method
+  tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    resourceFor  = "LinuxVM"
+  }
 }
 
 #create Network Security groups & security rule
@@ -46,6 +56,11 @@ resource "azurerm_network_security_group" "lin_nsg" {
     source_address_prefix      = "*"
     destination_address_prefix = "*"
   }
+  tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    resourceFor  = "LinuxVM"
+  }
 }
 
 #create NIC
@@ -60,6 +75,11 @@ resource "azurerm_network_interface" "lin_nic" {
     subnet_id                     = azurerm_subnet.lin_snet.id
     private_ip_address_allocation = var.pvt_ip_allocation_method
     public_ip_address_id          = azurerm_public_ip.lin_IP.id
+  }
+  tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    resourceFor  = "LinuxVM"
   }
 }
 
@@ -85,18 +105,23 @@ resource "azurerm_storage_account" "boga_storage" {
   resource_group_name      = data.azurerm_resource_group.rg.name
   account_tier             = var.storage_acc_tier
   account_replication_type = var.storage_acc_replica_type
+  tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    resourceFor  = "LinuxVM"
+  }
 }
 
 #creating a SSH key
 resource "tls_private_key" "lnx_key" {
-    algorithm = "RSA"
-    rsa_bits = 4096
+  algorithm = "RSA"
+  rsa_bits  = 4096
 }
 
 #Saving this private key to our machine and connecting to the vm using this key
 resource "local_file" "lnxkey" {
-    filename="lnxkey.pem"
-    content=tls_private_key.lnx_key.private_key_pem
+  filename = "lnxkey.pem"
+  content  = tls_private_key.lnx_key.private_key_pem
 }
 
 #create virtual machine(s)
@@ -126,7 +151,7 @@ resource "azurerm_linux_virtual_machine" "lin_vm" {
   #computer_name  = "hostname"
 
   admin_ssh_key {
-    username   = var.vm_username
+    username = var.vm_username
     #public_key = jsondecode(azapi_resource_action.ssh_public_key_gen.output).publicKey
     #public_key = file("~/.ssh/id_rsa.pub")
     public_key = tls_private_key.lnx_key.public_key_openssh
@@ -136,8 +161,13 @@ resource "azurerm_linux_virtual_machine" "lin_vm" {
     storage_account_uri = azurerm_storage_account.boga_storage.primary_blob_endpoint
   }
 
-  depends_on = [ 
+  depends_on = [
     azurerm_network_interface.lin_nic,
     tls_private_key.lnx_key
-   ]
+  ]
+  tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    resourceFor  = "LinuxVM"
+  }
 }
