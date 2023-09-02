@@ -1,0 +1,9 @@
+output "resource_group_name" { value = azurerm_resource_group.rg.name }
+output "VNet-name" { value = azurerm_virtual_network.myVNet.name }
+output "Subnet-name" { value = azurerm_subnet.mySNet.name }
+output "public-ip" { value = azurerm_windows_virtual_machine.boga_win.public_ip_address }
+output "NSG-name" { value = azurerm_network_security_group.myNSG.name }
+output "NIC-name" { value = azurerm_network_interface.myNIC.name }
+output "vm-name" { value = azurerm_windows_virtual_machine.boga_win.name }
+output "vm-size" { value = azurerm_windows_virtual_machine.boga_win.size }
+output "Boot-Diagnostics-Storage-name" { value = azurerm_storage_account.myStorage.name }
