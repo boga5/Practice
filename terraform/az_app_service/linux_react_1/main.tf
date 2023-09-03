@@ -43,3 +43,12 @@ resource "azurerm_linux_web_app" "tfm_app" {
     }
   }
 }
+
+resource "null_resource" "pass_variables" {
+  provisioner "local-exec" {
+    command = <<EOT
+      Write-Host "##vso[task.setvariable variable=app_name isoutput=true;]${azurerm_linux_web_app.tfm_app.name}"
+      EOT
+    interpreter = [ "pwsh","-Command" ]
+  }
+}
