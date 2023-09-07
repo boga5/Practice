@@ -1,0 +1,34 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- script: echo Hello, world!
+  displayName: 'Run a one-line script'
+
+- script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
+- task: AzureResourceManagerTemplateDeployment@3
+  name: ARMTemplateDeployment
+  inputs:
+    deploymentScope: 'Resource Group'
+    azureResourceManagerConnection: 'Bijibiji Azure'
+    subscriptionId: 'b5596ef4-4479-4819-8bc2-0197024f2051'
+    action: 'Create Or Update Resource Group'
+    resourceGroupName: 'rg-6309'
+    location: 'eastus'
+    templateLocation: 'URL of the file'
+    csmFileLink: 'https://raw.githubusercontent.com/boga5/Practice/main/ARM_templates/az_app_service/linux_app1/node_app1-deploy.json'
+    csmParametersFileLink: 'https://raw.githubusercontent.com/boga5/Practice/main/ARM_templates/az_app_service/linux_app1/node_app1-parameters.json'
+    deploymentMode: 'Incremental'
