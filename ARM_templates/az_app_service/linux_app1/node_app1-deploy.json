@@ -1,0 +1,107 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.5.6.12127",
+      "templateHash": "10602523904429381366"
+    }
+  },
+  "parameters": {
+    "webAppName": {
+      "type": "string",
+      "defaultValue": "boga-webapp-6309",
+      "minLength": "4",
+      "metadata": {
+        "description": "Name of the Web App and App Service Plan"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "eastus",
+      "allowedValues": [
+        "eastus",
+        "centralus",
+        "southindia",
+        "southeastasia",
+        "centralindia"
+      ],
+      "metadata": {
+        "description": "Location of the Web App and App Service Plan"
+      }
+    },
+    "sku": {
+      "type": "string",
+      "defaultValue": "F1",
+      "allowedValues": [
+        "F1",
+        "S1",
+        "B1"
+      ],
+      "metadata": {
+        "description": "Tier of App Service Plan"
+      }
+    },
+    "linuxFxVersion": {
+      "type": "string",
+      "defaultValue": "NODE|10.15",
+      "allowedValues": [
+        "NODE|10.15",
+        "DOTNETCORE|3.0",
+        "PHP|7.4",
+        "PYTHON|3.7"
+      ],
+      "metadata": {
+        "description": "Application Stack"
+      }
+    },
+    "appServicePlanPortalName": {
+      "type": "string",
+      "defaultValue": "asp-6309",
+      "metadata": {
+        "description": "Name of the App Service Plan"
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('appServicePlanPortalName')]",
+      "location": "[parameters('location')]",
+      "sku": {
+        "name": "[parameters('sku')]"
+      },
+      "kind": "app,linux",  //mandatory for linux app
+      "properties": {       //mandatory block for linux app
+        "reserved": true
+      },
+      "tags": {
+        "createdby": "Boga",
+        "source": "ARM_DirectDeploy",
+        "createdUsing": "ARM"
+      }
+    },
+
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2021-02-01",
+      "name": "[parameters('webAppName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanPortalName'))]",
+        "siteConfig": {
+          "linuxFxVersion": "[parameters('linuxFxVersion')]",
+          "minTlsVersion": "1.2"
+        }
+      },
+      "identity": {
+        "type": "SystemAssigned"
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', parameters('appServicePlanPortalName'))]"
+      ]
+    }
+  ]
+}

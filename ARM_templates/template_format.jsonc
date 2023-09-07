@@ -1,0 +1,9 @@
+{
+    "$schema" : "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#", //***mandatory field
+    "contentVersion": "1.0.0.0", //***mandatory field for source control or tracking changes
+    "parameters": { }, //optional block - for passing the required resources that will be used while creating the actual resource
+    "variables": { }, //optional block - 
+    "functions": [ ], //optional block - user-defined functions available within this template
+    "resources": [ ], //***mandatory block - resources that are deployed/updated in a RG or subscription 
+    "outputs": { }  //optional block - values that are returned after deployment
+}

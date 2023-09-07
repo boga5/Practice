@@ -12,6 +12,15 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  common_tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    usage        = "Personal"
+    source       = "Terraform-CLI"
+  }
+}
+
 # Generate a random integer to create a globally unique name
 resource "random_integer" "ri" {
   min = 10000
@@ -21,6 +30,7 @@ resource "random_integer" "ri" {
 resource "azurerm_resource_group" "tfm_rg" {
   name     = "rg-${random_integer.ri.result}"
   location = "eastus"
+  tags = local.common_tags
 }
 
 resource "azurerm_service_plan" "tfm_asp" {
@@ -29,6 +39,7 @@ resource "azurerm_service_plan" "tfm_asp" {
   resource_group_name = azurerm_resource_group.tfm_rg.name
   os_type             = "Linux"
   sku_name            = "B1"
+  tags = local.common_tags
 }
 
 resource "azurerm_linux_web_app" "tfm_app" {
@@ -42,6 +53,7 @@ resource "azurerm_linux_web_app" "tfm_app" {
       node_version = "16-lts"
     }
   }
+  tags = merge(local.common_tags, {tagCreated = "InsideResourceBlock"} )
 }
 
 resource "null_resource" "pass_variables" {
