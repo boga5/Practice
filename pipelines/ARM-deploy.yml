@@ -4,8 +4,13 @@
 # https://aka.ms/yaml
 
 trigger:
-- main
-- develop
+  branches:
+    include:
+    - main
+    - develop
+  paths:
+    include:
+    - pipelines/ARM-deploy.yml
 
 pool:
   vmImage: ubuntu-latest
