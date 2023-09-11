@@ -3,6 +3,7 @@ resource "azurerm_public_ip" "this_public_ip" {
     location = var.pip_location
     resource_group_name = var.rg_name
     allocation_method = "Dynamic"
+    tags = var.tags
 }
 
 output "vm_public_ip" {

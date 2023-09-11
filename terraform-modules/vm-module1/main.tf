@@ -27,6 +27,7 @@ locals {
 
 module "rg" {
   source = "./rg"
+  tags = local.common_tags
 }
 
 module "vnet" {
@@ -64,6 +65,7 @@ module "public_ip" {
   pip_name     = "publicip${module.rg.random_id}"
   pip_location = module.rg.rg_location
   rg_name      = module.rg.rg_name
+  tags = local.common_tags
 }
 
 module "storage" {

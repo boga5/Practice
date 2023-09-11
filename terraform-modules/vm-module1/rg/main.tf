@@ -6,5 +6,5 @@ resource "random_integer" "ri" {
 resource "azurerm_resource_group" "this_rg" {
     name = "rg-${random_integer.ri.result}"
     location = "East US"
-    // depends_on = [ random_id.random_id.hex ]
+    tags = var.tags
 }
