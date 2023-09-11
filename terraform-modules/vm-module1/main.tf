@@ -27,7 +27,7 @@ locals {
 
 module "rg" {
   source = "./rg"
-  tags = local.common_tags
+  tags   = local.common_tags
 }
 
 module "vnet" {
@@ -36,7 +36,7 @@ module "vnet" {
   vnet_location = module.rg.rg_location
   rg_name       = module.rg.rg_name
   snet_name     = "snet${module.rg.random_id}"
-  tags = local.common_tags
+  tags          = local.common_tags
 }
 
 module "nsg" {
@@ -44,7 +44,7 @@ module "nsg" {
   nsg_name     = "nsg${module.rg.random_id}"
   nsg_location = module.rg.rg_location
   rg_name      = module.rg.rg_name
-  tags = local.common_tags
+  tags         = local.common_tags
 }
 
 module "nic" {
@@ -53,9 +53,9 @@ module "nic" {
   nic_location = module.rg.rg_location
   rg_name      = module.rg.rg_name
   snet_id      = module.vnet.vm_subnet_id
-  pip_id       = module.public_ip.vm_public_ip_address  
-  nsg_id = module.nsg.vm_nsg.id
-  tags = local.common_tags
+  pip_id       = module.public_ip.vm_public_ip_address
+  nsg_id       = module.nsg.vm_nsg.id
+  tags         = local.common_tags
 
   //nic_config_name = "nic-config${module.rg.random_id}"
 }
@@ -65,7 +65,7 @@ module "public_ip" {
   pip_name     = "publicip${module.rg.random_id}"
   pip_location = module.rg.rg_location
   rg_name      = module.rg.rg_name
-  tags = local.common_tags
+  tags         = local.common_tags
 }
 
 module "storage" {
@@ -73,7 +73,7 @@ module "storage" {
   storage_name     = "diagstr${module.rg.random_id}"
   storage_location = module.rg.rg_location
   rg_name          = module.rg.rg_name
-  tags = local.common_tags
+  tags             = local.common_tags
 }
 
 module "vm" {
@@ -82,5 +82,5 @@ module "vm" {
   vm_location = module.rg.rg_location
   rg_name     = module.rg.rg_name
   nic_id      = module.nic.vm_nic.id
-  tags = local.common_tags
+  tags        = local.common_tags
 }
