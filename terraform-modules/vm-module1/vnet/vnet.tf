@@ -1,30 +1,16 @@
-/*
-#creating a random id for using it everywhere
-resource "random_id" "random_id" {
-    keepers = {
-        resource_group = ""
-    }
-    byte_length = 8
-}
-
-resource "azurerm_resource_group" "this_rg" {
-    name = "rg-${random_id.random_id.hex}"
-    location = "centralindia"
-}
-*/
-
 resource "azurerm_virtual_network" "this_vnet" {
-    name        = "vnet${module.rg.random_id}"
-    location    = module.rg.rg_location
-    resource_group_name    = module.rg.rg_name
+    name        = var.vnet_name
+    location    = var.vnet_location
+    resource_group_name    = var.rg_name
     address_space = ["10.5.0.0/20"]
+    // depends_on = [ module.rg.rg_name, module.rg.random_id ]
 }
 
 resource "azurerm_subnet" "this_snet" {
-    name        = "snet${module.rg.random_id}"
-    resource_group_name   = module.rg.rg_name
+    name        = var.snet_name
+    resource_group_name   = var.rg_name
     virtual_network_name = azurerm_virtual_network.this_vnet.name
-    subnet_prefixes = ["10.0.2.0/26"]
+    address_prefixes = ["10.5.1.0/26"]
 }
 
 /*
@@ -42,11 +28,11 @@ output "rg_location" {
 */
 
 output "vm_vnet" {
-    value = azurerm_virtual_network.this_vnet
+    value = azurerm_virtual_network.this_vnet.name
 }
 
-output "vm_subnet" {
-    value = azurerm_subnet.this_snet
+output "vm_subnet_id" {
+    value = azurerm_subnet.this_snet.id
 }
 
 output "snet_name" {

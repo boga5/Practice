@@ -1,7 +1,7 @@
 resource "azurerm_network_security_group" "this_nsg" {
-    name    = "nsg${module.vnet.random_id}"
-    location = module.rg.rg_location
-    resource_group_name = module.vnet.rg_name
+    name    = var.nsg_name
+    location = var.nsg_location
+    resource_group_name = var.rg_name
 
     security_rule {
         name = "RDP"
