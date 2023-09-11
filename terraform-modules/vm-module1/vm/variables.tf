@@ -17,3 +17,7 @@ variable "nic_id" {
     type = string
     description = "NIC ID"
 }
+
+variable "tags" {
+    description = "Tags for resources"
+}

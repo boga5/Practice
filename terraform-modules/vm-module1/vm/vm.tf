@@ -16,7 +16,7 @@ resource "azurerm_windows_virtual_machine" "this_vm" {
         sku = "2019-Datacenter"
         version = "latest"
     }
-    // depends_on = [ module.rg, module.nic ]
+    tags = var.tags
 }
 
 output "vm_name" {

@@ -82,4 +82,5 @@ module "vm" {
   vm_location = module.rg.rg_location
   rg_name     = module.rg.rg_name
   nic_id      = module.nic.vm_nic.id
+  tags = local.common_tags
 }
