@@ -4,6 +4,7 @@ resource "azurerm_storage_account" "this_storage" {
     resource_group_name = var.rg_name
     account_tier = "Standard"
     account_replication_type = "LRS"
+    tags = var.tags
     // depends_on = [ module.rg.rg_name, module.rg.random_id ]
 }
 

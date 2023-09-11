@@ -73,6 +73,7 @@ module "storage" {
   storage_name     = "diagstr${module.rg.random_id}"
   storage_location = module.rg.rg_location
   rg_name          = module.rg.rg_name
+  tags = local.common_tags
 }
 
 module "vm" {
