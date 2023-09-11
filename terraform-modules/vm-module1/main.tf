@@ -16,6 +16,15 @@ provider "azurerm" {
   features {}
 }
 
+locals {
+  common_tags = {
+    createdBy    = "Boga"
+    createdUsing = "Terraform"
+    usage        = "Personal"
+    source       = "Terraform-CLI"
+  }
+}
+
 module "rg" {
   source = "./rg"
 }
@@ -26,6 +35,7 @@ module "vnet" {
   vnet_location = module.rg.rg_location
   rg_name       = module.rg.rg_name
   snet_name     = "snet${module.rg.random_id}"
+  tags = local.common_tags
 }
 
 module "nsg" {

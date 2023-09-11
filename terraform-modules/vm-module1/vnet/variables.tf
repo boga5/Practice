@@ -17,3 +17,7 @@ variable "snet_name" {
     type = string
     description = "RG of the SubNet"
 }
+
+variable "tags" {
+    description = "Tags for resources"
+}

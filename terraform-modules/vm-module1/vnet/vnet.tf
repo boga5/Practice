@@ -4,6 +4,7 @@ resource "azurerm_virtual_network" "this_vnet" {
     resource_group_name    = var.rg_name
     address_space = ["10.5.0.0/20"]
     // depends_on = [ module.rg.rg_name, module.rg.random_id ]
+    tags = var.tags
 }
 
 resource "azurerm_subnet" "this_snet" {
