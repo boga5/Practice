@@ -14,6 +14,7 @@ resource "azurerm_network_security_group" "this_nsg" {
         destination_address_prefix = "*"
         destination_port_range = "1433"
     }
+    tags = var.tags
 }
 
 output "vm_nsg" {

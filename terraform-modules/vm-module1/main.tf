@@ -43,6 +43,7 @@ module "nsg" {
   nsg_name     = "nsg${module.rg.random_id}"
   nsg_location = module.rg.rg_location
   rg_name      = module.rg.rg_name
+  tags = local.common_tags
 }
 
 module "nic" {

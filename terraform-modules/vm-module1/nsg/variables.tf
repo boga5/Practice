@@ -12,3 +12,7 @@ variable "rg_name" {
     type = string
     description = "RG of the NSG"
 }
+
+variable "tags" {
+    description = "Tags for resources"
+}
