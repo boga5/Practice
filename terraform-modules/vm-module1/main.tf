@@ -51,9 +51,9 @@ module "nic" {
   nic_location = module.rg.rg_location
   rg_name      = module.rg.rg_name
   snet_id      = module.vnet.vm_subnet_id
-  pip_id       = module.public_ip.vm_public_ip_address
-
+  pip_id       = module.public_ip.vm_public_ip_address  
   nsg_id = module.nsg.vm_nsg.id
+  tags = local.common_tags
 
   //nic_config_name = "nic-config${module.rg.random_id}"
 }

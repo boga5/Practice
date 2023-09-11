@@ -10,6 +10,7 @@ resource "azurerm_network_interface" "this_nic" {
         private_ip_address_allocation = "Dynamic"
         public_ip_address_id = var.pip_id
     }
+    tags = var.tags
 }
 
 resource "azurerm_network_interface_security_group_association" "this_nic_nsg" {

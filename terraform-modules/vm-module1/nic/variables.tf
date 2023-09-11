@@ -27,3 +27,7 @@ variable "nsg_id" {
     type = string
     description = "NSG ID"
 }
+
+variable "tags" {
+    description = "Tags for resources"
+}
