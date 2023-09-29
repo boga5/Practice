@@ -1,0 +1,85 @@
+trigger:
+    branches:
+      include:
+      - refs/heads/dev
+      - refs/heads/sit*
+      - refs/heads/perf
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: <Folder>/template_repo
+      endpoint: <endpoint>
+      ref: refs/tags/v1.1.0
+
+variables:
+# variable groups based on environment
+
+#if branch is dev, use DEV_PROFILE
+- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}:
+  - group: DEV_PROFILE
+
+#if branch is noy dev, use STG_PROFILE
+- ${{ if not(eq(variables['Build.SourceBranch'], 'refs/heads/dev')) }}:
+  - group: STG_PROFILE
+
+#- ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/perf') }}:
+#  group: PROD_PROFILE
+
+#FROM & TO NOTIFICATION EMAIL
+- name: FROM_NOTIFICATION_EMAIL
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}:
+    value: $(Build.RequestedForEmail)
+
+- name: TO_NOTIFICATION_EMAIL
+  ${{ if eq(variables['Build.SourceBranch'], 'refs/heads/dev') }}:
+    value: $(Build.RequestedForEmail)
+
+#assigning the adhoc user value based on email of committor
+- name: adhoc_user
+  ${{ if eq(variables['Build.RequestedForEmail'], 'sunil.boga05@gmail.com') }}:
+    value: sunboga
+
+stages:
+- template: pipeline_templates/release.yml@templates
+  parameters:
+    agentPoolName: 'Test'
+    agentOS: 'Linux'
+    jobTimeoutInMinutes: 180
+    defaultVariables:
+      __default__:
+        envName: dev
+        ansibleUsername : $(ANSIBLE_TOWER_USER)
+        ansiblePassword : $(ANSIBLE_TOWER_USER_PASSWORD)
+        ansibleInventory: $(ANSIBLE_INVENTORY)
+        ansibleJobTemplate: $(ANSIBLE_JOB_TEMPLATE)
+        ansibleProject: $(ANSIBLE_PROJECT)
+        ansibleRelease: $(versionAssignTask.version)
+        ansibleApiHost: ansible.bmogc.net
+    customVariables:
+      Deploy:
+        additionalAnsibleArguments: '--apic_server=$(APIC_SERVER) --debug_app="$(DEBUG_APP)" --apic_realm="$(APIC_REALM)" --destdir="$(DESTINATION_DIR)" --gituser="$(GITUSER)" --gitpass="$(GITUSER_PASSWORD)" --from_notification_email="$(FROM_NOTIFICATION_EMAIL)" --to_notification_email="$(TO_NOTIFICATION_EMAIL)" --apic_user="$(API_DEPLOY_USER)" --apic_password="$(API_DEPLOY_USER_PASSWORD)"  --adhoc_deploy="$(adhoc_user)" --dest_techunit="$(varAssignTask.techunit)" --repo_branch="$(varAssignTask.source_branch)" --apic_env="$(varAssignTask.source_branch)"  --git_commit_id="$(Build.SourceVersion)" --service_no="$(varAssignTask.commit_message)"'
+    insertPreDeploySteps:
+      - script: |
+          source_branch=$(Build.SourceBranchName)
+          echo "##vso[task.setvariable variable=source_branch;isOutput=true]$source_branch"
+          echo "source_branch = $source_branch"
+          techunit=`echo "$(Build.Repository.Name)" | sed 's/BMO-Prod\/APICPUB_//g' | sed 's/_20975//g'`
+          echo "##vso[task.setvariable variable=techunit;isOutput=true]$techunit"
+          echo "techunit = $techunit"
+          commit_message=$(Build.SourceVersionMessage)
+          echo "##vso[task.setvariable variable=commit_message;isOutput=true]$commit_message"
+          echo "Commit message = $commit_message"
+        name: varAssignTask
+      - script: |
+          # Get the current year, month, and week number
+          current_year=$(date +%Y) && current_month=$(date +%m) && week_of_month=$((($(date +%-d)-1)/7+1))
+          # Convert month and week numbers to the desired format (e.g., R08 and 05)
+          formatted_month="R$(printf %02d $((10#$current_month)))"
+          formatted_week="$(printf %02d $((10#$week_of_month)))"
+          # Print the formatted date
+          version="DC-$current_year-$formatted_month.$formatted_week"
+          echo "version = $version"
+          echo "##vso[task.setvariable variable=version;isOutput=true]$version"
+        name: versionAssignTask
