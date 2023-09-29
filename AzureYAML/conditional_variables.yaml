@@ -1,0 +1,20 @@
+trigger:
+- main
+- sit*
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+
+variables:
+#if the branch name is sit3, it will use sit2 variable group
+- ${{ if eq(variables['Build.SourceBranch'], 'sit3' ) }}:
+  - group: sit2
+#if the branch name is not sit3, it will use sit1 variable group
+- ${{ if not(eq(variables['Build.SourceBranchName'], 'sit3' ))}}:
+  - group: sit1
+
+steps:
+- script: |
+          echo "$(name) in line2"
