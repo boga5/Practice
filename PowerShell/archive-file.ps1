@@ -11,6 +11,8 @@ try {
     #Copy contents to a file
     if (Test-Path -Path $FileName) {
         Write-Output "-*-*-*-*-* $($FileName) already exists in this folder -*-*-*-*-*"
+        Write-Output "Exiting the script"
+        Exit
     }
     else {
         Get-Service | Where-Object { $_.Status -eq 'Stopped' -and $_.StartType -eq 'Disabled' } >> $FileName -ErrorAction Stop
@@ -29,6 +31,8 @@ catch {
 try {
     if (Test-Path -Path $ZipFile) {
         Write-Output "-*-*-*-*-* $ZipFile already exists -*-*-*-*-*"
+        Write-Output "Exiting the script"
+        Exit
     }
 
     else {
