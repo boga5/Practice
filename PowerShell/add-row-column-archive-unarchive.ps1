@@ -8,6 +8,7 @@ $CSVFile = "csv_sample.csv"
 $ModifiedFile = "mod_csv_sample1.csv"
 $UnarchiveFile = "unarchive_csv"
 $RowFile = "row_csv.csv"
+$ColFile = "col_csv.csv"
 
 Copy-Item -Path $Folder\$CSVFile -Destination $Folder\$RowFile
 
@@ -51,6 +52,22 @@ catch {
     $Error.Clear()
 }
 #endregion column addition
+
+#adding column with conditions isn't working without using CSV
+#region adding a new column with CSV
+#try {
+#    Write-Output "`r`nAdding a new column without CSV cmdlets"
+#    Get-Content $CSVFile |
+#    #Select-Object *,@{Name="col5";Expression={''}} >> $ColFile -ErrorAction Stop
+#    Add-Member -MemberType ScriptProperty -Name "Kid" -Value {if ($this.age -lt 5) {'Y'} else {'N'}} -PassThru >> $ColFile |
+#    Get-Content $ColFile
+#}
+#catch {
+#    Write-Output "`r`n Column addition without CSV failed. `r`n Check below errors"
+#    Write-Output $Error
+#    $Error.Clear()
+#}
+#endregion without csv
 
 #region compress this file
 try {
