@@ -1,9 +1,9 @@
 ﻿Clear-Host
 
-Write-Output "`n Observations `n"
-Write-Output "1. ? is important for naming the capture groups`n"
-Write-Output "2. Groups[1..4] is named accordingly to declarations before this`n"
-Write-Output "3. Multiple patterns will work only with Capture Groups`n"
+Write-Output "`n Observations `n"; $a=1;
+Write-Output "$a. ? is important for naming the capture groups`n";$a++;
+Write-Output "$a. Groups[1..4] is named accordingly to declarations before this`n";$a++;
+Write-Output "$a. Multiple patterns will work only with Capture Groups`n";
 Set-Content profiles.csv @"
 sunil boga 123 @sunboga
 ramya ravirala 231 @ramya5

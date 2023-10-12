@@ -1,5 +1,9 @@
 ﻿#trying something with serial numbers as well
 Clear-Host
+Write-Output "`n About this script `n"; $a=1;
+Write-Output "$a. Gets the profiles with serial numbers"; $a++;
+Write-Output "$a. 1st Output captures the groups using string patterns"; $a++;
+Write-Output "$a. 2nd Output captures the groups using variables declared with string patterns"; $a++;
 Set-Content profiles-serial.csv @"
 1 sunil boga @sunboga 123
 2 ramya ravirala @ramya 213
@@ -12,8 +16,8 @@ anand boga @anand 6 321
 @nikhitha nikhitha 9 boga 105
 "@
 
-Write-Output "`n Profiles with serial number declared successfully`n"
-Write-Output "`n Outputs using String patterns`n"
+Write-Output "`n Profiles with serial number declared successfully"
+Write-Output "`n Outputs using a String pattern`n"
 Get-ChildItem profiles-serial.csv | 
 Select-String -Pattern "(\d) ([^-]+) (\w+) (@.+) (\d+)" |
 ForEach-Object {
@@ -34,7 +38,7 @@ $anandPattern = "(?<firstName>[^-]+) (?<lastName>\w+) (?<handle>@.+) (?<serial>\
 $manishaPattern = "(?<followers>\d+) (?<serial>\d) (?<handle>@.+) (?<firstName>[^-]+) (?<lastName>\w+)"
 $anilPattern = "(?<followers>\d+) (?<handle>@.+) (?<firstName>[^-]+) (?<lastName>\w+) (?<serial>\d)"
 $nikhithaPattern = "(?<handle>@.+) (?<firstName>[^-]+) (?<serial>\d) (?<lastName>\w+) (?<followers>\d+)"
-Write-Output "`n Various Capture Groups declared successfully`n"
+Write-Output "`n Various Capture Groups declared successfully"
 Write-Output "`n Outputs using Capture Groups`n"
 Get-ChildItem profiles-serial.csv |
 Select-String -Pattern $sunRamPattern, $krishPadPattern, $maanuPattern, `
