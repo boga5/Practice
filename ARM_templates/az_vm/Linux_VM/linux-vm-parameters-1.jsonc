@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "eastus"
+        },
+        "virtualNetworkName": {
+            "value": "vnetbg"
+        },
+        "subnetName": {
+            "value": "snetbg"
+        },
+        "networkSecurityGroupName": {
+            "value": "nsgbg"
+        },
+        "vmName": {
+            "value": "vmbg"
+        },
+        "adminUsername": {
+            "value": "boga"
+        },
+        "adminPasswordOrKey": {
+            "value": "Sample@12345678"
+        }
+    }
+}
