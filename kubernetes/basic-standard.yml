@@ -1,0 +1,26 @@
+apiVersion:
+kind:
+metadata:
+  name:
+spec:
+    selector:
+        matchLabels:
+            app: name
+    template:
+        metadata:
+            labels:
+                app:
+        spec:
+            containers:
+              - image:
+                name:
+                resources:
+                    requests:
+                        cpu:
+                        memory:
+                    limits:
+                        cpu:
+                        memory:
+            ports:
+              - containerPort:
+                name:   

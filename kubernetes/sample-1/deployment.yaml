@@ -1,0 +1,26 @@
+apiVersion: apps/v1 #The API resource where this workload resides
+kind: Deployment #the kind of workload we're creating
+metadata: 
+  name: bogas-1st-k8s #name of the deployment and used it to identify & query the deployment info using kubectl
+spec:
+  selector: #this defines the workloads this deployment manages does this yaml applies to
+    matchLabels: #Matches all the pods wth defined labels
+      app: bogas-1st-k8s
+  template: #The template of the pod inside the deployment. Used to define the pods
+    metadata: #Metadata for the pod
+      labels:
+        app: bogas-1st-k8s
+    spec: #to define the containers inside the pod
+      containers:
+        - image: mcr.microsoft.com/mslearn/samples/contoso-website
+          name: bogas-1st-k8s
+          resources: #Limiting the resources used by this app
+            requests:  #Minimum amt of resources requested
+              cpu: 100m
+              memory: 128Mi
+            limits: #Maximum utilization by resources
+              cpu: 250m
+              memory: 256Mi
+          ports:
+            - containerPort: 80 
+              name: http #naming allows us to change the port without changing files that reference that port

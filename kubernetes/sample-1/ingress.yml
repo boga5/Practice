@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata: 
+  name: bogas-1st-k8s
+  annotations:
+    kubernetes.io/ingress.class: addon-http-application-routing
+spec:
+  rules:
+    - host: contoso.d96c1e2137f8467bb62a.eastus.aksapp.io
+      http:
+        paths:
+          - backend: #How the ingress will handle the request
+              service:
+                name: bogas-1st-k8s #which service should the request be forwarded to
+                port:
+                  name: http #port of that service
+            path: / #which path is this rule referring to
+            pathType: Prefix 

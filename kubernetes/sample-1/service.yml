@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service #the first 2 keys define the apiVersion and kind of manifest
+metadata: 
+  name: bogas-1st-k8s
+spec:
+  type: ClusterIP
+  selector: #defines which services this spec applies to
+    app: bogas-1st-k8s
+  ports: #define port-forwarding rules
+    - port: 80 #SERVICE port number
+      name: http #SERVICE port name
+      protocol: TCP #The protocol the service will listen to
+      targetPort: http #port to forward to in the pod
