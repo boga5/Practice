@@ -22,7 +22,7 @@ steps:
   inputs:
     deploymentScope: 'Resource Group'
     azureResourceManagerConnection: 'Bijibiji Azure'
-    subscriptionId: 'b5596ef4-4479-4819-8bc2-0197024f2051'
+    subscriptionId: '<subscriptionID>'
     action: 'Create Or Update Resource Group'
     resourceGroupName: 'rg-6309'
     location: 'eastus'
